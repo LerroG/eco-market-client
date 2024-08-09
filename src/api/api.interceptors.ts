@@ -1,6 +1,6 @@
 import axios, { CreateAxiosDefaults } from 'axios'
 
-import { SERVER_URL } from '@/app/config/api.config'
+import { SERVER_URL } from '@/config/api.config'
 
 import {
 	getAccessToken,

@@ -1,9 +1,44 @@
+import Image from 'next/image'
+
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+
 import { ILastUsers } from '@/shared/types/statistic.interface'
+
+import { formatPrice } from '@/utils/string/formatPrice'
+
+import styles from './MiddleStatistic.module.scss'
 
 interface LastUsersProps {
 	data: ILastUsers[]
 }
 
 export const LastUsers = ({ data }: LastUsersProps) => {
-	return <div>LastUsers</div>
+	return (
+		<Card>
+			<CardHeader className={styles.header}>
+				<CardTitle>Покупатели</CardTitle>
+			</CardHeader>
+			<CardContent>
+				{data.length ? (
+					data.map(user => (
+						<div className={styles.user}>
+							<Image
+								src={user.picture}
+								alt={user.name}
+								width={40}
+								height={40}
+							/>
+							<div className={styles.info}>
+								<p className={styles.name}>{user.name}</p>
+								<p>{user.email}</p>
+							</div>
+							<div className={styles.total}>+{formatPrice(user.total)}</div>
+						</div>
+					))
+				) : (
+					<div>{'Покупателей пока нет :('}</div>
+				)}
+			</CardContent>
+		</Card>
+	)
 }

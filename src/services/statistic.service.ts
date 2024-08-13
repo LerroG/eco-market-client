@@ -18,7 +18,7 @@ class StatisticService {
 	}
 
 	async getMiddle(storeId: string) {
-		const { data } = await axiosWithAuth<IMiddleStatistic[]>({
+		const { data } = await axiosWithAuth<IMiddleStatistic>({
 			url: API_URL.statistics(`/middle/${storeId}`),
 			method: 'GET'
 		})

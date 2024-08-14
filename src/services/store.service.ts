@@ -5,7 +5,7 @@ import { API_URL } from '@/config/api.config'
 import {
 	IStore,
 	IStoreCreate,
-	IStoreEdit
+	IStoreUpdate
 } from '@/shared/types/store.interface'
 
 class StoreService {
@@ -28,7 +28,7 @@ class StoreService {
 		return createdStore
 	}
 
-	async update(data: IStoreEdit, id: string) {
+	async update(data: IStoreUpdate, id: string) {
 		const { data: updatedStore } = await axiosWithAuth<IStore>({
 			url: API_URL.stores(`/${id}`),
 			method: 'PUT',

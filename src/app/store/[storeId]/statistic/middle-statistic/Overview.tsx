@@ -39,7 +39,7 @@ export const Overview = ({ data }: OverviewProps) => {
 					<AreaChart
 						accessibilityLayer
 						data={data}
-						margin={{ left: 12, right: 12 }}
+						margin={{ top: 12, right: 12 }}
 					>
 						<CartesianGrid vertical={false} />
 						<XAxis

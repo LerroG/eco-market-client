@@ -1,5 +1,5 @@
 import { ColumnDef } from '@tanstack/react-table'
-import { ArrowUpDown, MoreHorizontal, Pencil } from 'lucide-react'
+import { ArrowUpDown, ExternalLink, MoreHorizontal, Pencil } from 'lucide-react'
 import Link from 'next/link'
 
 import { Button } from '@/components/ui/button'
@@ -11,13 +11,15 @@ import {
 	DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
 
-import { STORE_URL } from '@/config/url.config'
+import { PUBLIC_URL, STORE_URL } from '@/config/url.config'
 
-import { IColor } from '@/shared/types/color.interface'
+import { ICategory } from '@/shared/types/category.interface'
 
-export const colorColumns: ColumnDef<IColor>[] = [
+export interface ICategoryColumn extends Omit<ICategory, 'description'> {}
+
+export const categoryColumns: ColumnDef<ICategoryColumn>[] = [
 	{
-		accessorKey: 'name',
+		accessorKey: 'title',
 		header: ({ column }) => {
 			return (
 				<Button
@@ -31,27 +33,18 @@ export const colorColumns: ColumnDef<IColor>[] = [
 		}
 	},
 	{
-		accessorKey: 'value',
+		accessorKey: 'createdAt',
 		header: ({ column }) => {
 			return (
 				<Button
 					variant='ghost'
 					onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
 				>
-					Значение
+					Дата создания
 					<ArrowUpDown className='ml-2 h-4 w-4' />
 				</Button>
 			)
-		},
-		cell: ({ row }) => (
-			<div className='flex items-center gap-x-3'>
-				{row.original.value}
-				<div
-					className='size-6 rounded-full border'
-					style={{ backgroundColor: row.original.value }}
-				/>
-			</div>
-		)
+		}
 	},
 	{
 		accessorKey: 'createdAt',
@@ -79,8 +72,14 @@ export const colorColumns: ColumnDef<IColor>[] = [
 				</DropdownMenuTrigger>
 				<DropdownMenuContent align='end'>
 					<DropdownMenuLabel>Действия</DropdownMenuLabel>
+					<Link href={PUBLIC_URL.category(row.original.id)} target='_blank'>
+						<DropdownMenuItem>
+							<ExternalLink className='size-4 mr-2' />
+							Страница с категорией
+						</DropdownMenuItem>
+					</Link>
 					<Link
-						href={STORE_URL.colorEdit(row.original.storeId, row.original.id)}
+						href={STORE_URL.categoryEdit(row.original.storeId, row.original.id)}
 					>
 						<DropdownMenuItem>
 							<Pencil className='size-4 mr-2' />

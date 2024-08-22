@@ -14,51 +14,48 @@ import {
 import { Input } from '@/components/ui/input'
 import ConfirmModal from '@/components/ui/modals/ConfirmModal'
 
-import { useCreateColor } from '@/hooks/queries/colors/useCreateColor'
-import { useDeleteColor } from '@/hooks/queries/colors/useDeleteColor'
-import { useUpdateColor } from '@/hooks/queries/colors/useUpdateColor'
+import { useCreateCategory } from '@/hooks/queries/categories/useCreateCategory'
+import { useDeleteCategory } from '@/hooks/queries/categories/useDeleteCategory'
+import { useUpdateCategory } from '@/hooks/queries/categories/useUpdateCategory'
 
-import { IColor, IColorInput } from '@/shared/types/color.interface'
+import { ICategory, ICategoryInput } from '@/shared/types/category.interface'
 
 import styles from '../Store.module.scss'
 
-interface ColorFormProps {
-	color?: IColor
+interface CategoryFormProps {
+	category?: ICategory | null
 }
 
-export const ColorForm = ({ color }: ColorFormProps) => {
-	const { createColor, isLoadingCreate } = useCreateColor()
-	const { updateColor, isLoadingUpdate } = useUpdateColor()
-	const { deleteColor, isLoadingDelete } = useDeleteColor()
+export const CategoryForm = ({ category }: CategoryFormProps) => {
+	const { createCategory, isLoadingCreate } = useCreateCategory()
+	const { updateCategory, isLoadingUpdate } = useUpdateCategory()
+	const { deleteCategory, isLoadingDelete } = useDeleteCategory()
 
-	const title = color ? 'Изменить данные' : 'Создать цвет'
-	const description = color
-		? 'Изменить данные о цвете'
-		: 'Добавить новый цвет в магазин'
-	const action = color ? 'Сохранить' : 'Создать'
+	const title = category ? 'Изменить данные' : 'Создать категорию'
+	const description = category
+		? 'Изменить данные о категории'
+		: 'Добавить новую категорию в магазин'
+	const action = category ? 'Сохранить' : 'Создать'
 
-	const form = useForm<IColorInput>({
+	const form = useForm<ICategoryInput>({
 		mode: 'onChange',
-		values: {
-			name: color?.name || '',
-			value: color?.value || ''
-		} || {
-			name: '',
-			value: ''
+		values: category || {
+			title: '',
+			description: ''
 		}
 	})
 
-	const onSubmit: SubmitHandler<IColorInput> = data => {
-		if (color) updateColor(data)
-		else createColor(data)
+	const onSubmit: SubmitHandler<ICategoryInput> = data => {
+		if (category) updateCategory(data)
+		else createCategory(data)
 	}
 
 	return (
 		<div className={styles.wrapper}>
 			<div className={styles.header}>
 				<Heading title={title} description={description} />
-				{color && (
-					<ConfirmModal handleClick={() => deleteColor()}>
+				{category && (
+					<ConfirmModal handleClick={() => deleteCategory()}>
 						<Button size='icon' variant='primary' disabled={isLoadingDelete}>
 							<Trash className='size-4' />
 						</Button>
@@ -70,7 +67,7 @@ export const ColorForm = ({ color }: ColorFormProps) => {
 					<div className={styles.fields}>
 						<FormField
 							control={form.control}
-							name='name'
+							name='title'
 							rules={{
 								required: 'Название обязательно'
 							}}
@@ -79,7 +76,7 @@ export const ColorForm = ({ color }: ColorFormProps) => {
 									<FormLabel>Название</FormLabel>
 									<FormControl>
 										<Input
-											placeholder='Название цвета'
+											placeholder='Название категории'
 											disabled={isLoadingCreate || isLoadingUpdate}
 											{...field}
 										/>
@@ -90,16 +87,16 @@ export const ColorForm = ({ color }: ColorFormProps) => {
 						/>
 						<FormField
 							control={form.control}
-							name='value'
+							name='description'
 							rules={{
-								required: 'Значение обязательно'
+								required: 'Описание обязательно'
 							}}
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel>Значение цвета</FormLabel>
+									<FormLabel>Описание</FormLabel>
 									<FormControl>
 										<Input
-											placeholder='Значение цвета'
+											placeholder='Описание категории'
 											disabled={isLoadingCreate || isLoadingUpdate}
 											{...field}
 										/>

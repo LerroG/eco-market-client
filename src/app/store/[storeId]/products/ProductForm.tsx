@@ -52,7 +52,7 @@ export const ProductForm = ({
 	const title = product ? 'Изменить данные' : 'Создать товар'
 	const description = product
 		? 'Изменить данные о товаре'
-		: 'Добавить новый товар а магазин'
+		: 'Добавить новый товар в магазин'
 	const action = product ? 'Сохранить' : 'Создать'
 
 	const form = useForm<IProductInput>({

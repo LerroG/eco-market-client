@@ -13,18 +13,11 @@ import {
 
 import { PUBLIC_URL, STORE_URL } from '@/config/url.config'
 
-export interface IProductColumn {
-	id: string
-	title: string
-	price: string
-	category: string
-	color: string
-	storeId: string
-}
+import { IColor } from '@/shared/types/color.interface'
 
-export const productColumns: ColumnDef<IProductColumn>[] = [
+export const colorColumns: ColumnDef<IColor>[] = [
 	{
-		accessorKey: 'title',
+		accessorKey: 'name',
 		header: ({ column }) => {
 			return (
 				<Button
@@ -32,61 +25,47 @@ export const productColumns: ColumnDef<IProductColumn>[] = [
 					onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
 				>
 					Название
-					<ArrowUpDown className='ml-2 size-4' />
+					<ArrowUpDown className='ml-2 h-4 w-4' />
 				</Button>
 			)
 		}
 	},
 	{
-		accessorKey: 'price',
+		accessorKey: 'value',
 		header: ({ column }) => {
 			return (
 				<Button
 					variant='ghost'
 					onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
 				>
-					Цена
-					<ArrowUpDown className='ml-2 size-4' />
-				</Button>
-			)
-		}
-	},
-	{
-		accessorKey: 'category',
-		header: ({ column }) => {
-			return (
-				<Button
-					variant='ghost'
-					onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-				>
-					Категория
-					<ArrowUpDown className='ml-2 size-4' />
-				</Button>
-			)
-		}
-	},
-	{
-		accessorKey: 'color',
-		header: ({ column }) => {
-			return (
-				<Button
-					variant='ghost'
-					onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-				>
-					Цвет
-					<ArrowUpDown className='ml-2 size-4' />
+					Значение
+					<ArrowUpDown className='ml-2 h-4 w-4' />
 				</Button>
 			)
 		},
 		cell: ({ row }) => (
 			<div className='flex items-center gap-x-3'>
-				{row.original.color}
+				{row.original.value}
 				<div
-					className='size-5 rounded-full border'
-					style={{ backgroundColor: row.original.color }}
+					className='size-6 rounded-full border'
+					style={{ backgroundColor: row.original.value }}
 				/>
 			</div>
 		)
+	},
+	{
+		accessorKey: 'createdAt',
+		header: ({ column }) => {
+			return (
+				<Button
+					variant='ghost'
+					onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+				>
+					Дата создания
+					<ArrowUpDown className='ml-2 h-4 w-4' />
+				</Button>
+			)
+		}
 	},
 	{
 		accessorKey: 'actions',
@@ -100,14 +79,8 @@ export const productColumns: ColumnDef<IProductColumn>[] = [
 				</DropdownMenuTrigger>
 				<DropdownMenuContent align='end'>
 					<DropdownMenuLabel>Действия</DropdownMenuLabel>
-					<Link href={PUBLIC_URL.product(row.original.id)} target='_blank'>
-						<DropdownMenuItem>
-							<ExternalLink className='size-4 mr-2' />
-							Страница с продуктом
-						</DropdownMenuItem>
-					</Link>
 					<Link
-						href={STORE_URL.productEdit(row.original.storeId, row.original.id)}
+						href={STORE_URL.colorEdit(row.original.storeId, row.original.id)}
 					>
 						<DropdownMenuItem>
 							<Pencil className='size-4 mr-2' />
